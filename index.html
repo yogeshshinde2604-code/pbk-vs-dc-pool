@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DC vs PBKS LIVE 2026 - BEAST POOL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#fff;font-family:'Rajdhani',sans-serif;margin:0;overflow-x:hidden}
+.app{max-width:480px;margin:0 auto;min-height:100vh;position:relative}
+.hidden{display:none!important}
+button,input{font-family:'Rajdhani',sans-serif;border:none;outline:none;cursor:pointer}
+.reel-intro{position:fixed;inset:0;background:linear-gradient(135deg,#ff1744,#448aff);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:fadeOut 0.5s 2.5s forwards}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
+.reel-logo{font-size:60px;font-weight:900;animation:zoomIn 1s ease}
+@keyframes zoomIn{0%{transform:scale(0)}100%{transform:scale(1)}}
+.reel-vs{font-size:40px;margin:20px 0;animation:slideIn 1s 0.5s both}
+@keyframes slideIn{0%{transform:translateY(100px);opacity:0}100%{transform:translateY(0);opacity:1}}
+.login-box{background:rgba(0,245,255,0.08);padding:35px 25px;border-radius:25px;border:2px solid #00f5ff;text-align:center;margin:50px 20px;backdrop-filter:blur(10px)}
+h1{font-size:28px;margin-bottom:15px;background:linear-gradient(90deg,#ff1744,#448aff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.match-banner{background:linear-gradient(135deg,#ff1744,#448aff);padding:20px;margin:15px;border-radius:20px;text-align:center;border:3px solid #ffd600;position:relative;overflow:hidden}
+.match-banner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(255,255,255,0.1),transparent);animation:shine 3s infinite}
+@keyframes shine{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.match-vs{font-size:32px;font-weight:900;margin:10px 0;text-shadow:0 0 20px rgba(255,255,255,0.5)}
+.match-info{font-size:12px;color:#fff;opacity:0.9}
+.live-badge{background:#ff1744;color:#fff;padding:5px 15px;border-radius:15px;font-size:14px;font-weight:900;display:inline-block;animation:livePulse 1s infinite}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)}}
+.score-box{background:rgba(255,255,255,0.1);padding:15px;margin:15px;border-radius:15px;text-align:center}
+.score{font-size:36px;font-weight:900;color:#00ff88;text-shadow:0 0 20px rgba(0,255,136,0.8)}
+.overs{font-size:14px;color:#aaa;margin-top:5px}
+.btn{width:100%;padding:18px;margin:10px 0;border-radius:15px;font-weight:900;font-size:16px;position:relative;overflow:hidden}
+.guest{background:linear-gradient(135deg,#ffd600,#ff9800);color:#000}
+.start{background:linear-gradient(135deg,#00f5ff,#00ff88);color:#000}
+input{width:100%;padding:16px;margin:10px 0;border-radius:15px;background:rgba(0,0,0,0.6);color:#fff;border:2px solid #00f5ff;font-size:16px}
+.topbar{background:rgba(0,0,0,0.9);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #00f5ff;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.coins{background:linear-gradient(135deg,#ffd600,#ff9800);color:#000;padding:8px 15px;border-radius:20px;font-weight:900;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.card{background:rgba(0,245,255,0.08);padding:18px;margin:12px 15px;border-radius:18px;border:2px solid #00f5ff;backdrop-filter:blur(10px)}
+.pool-mode{border:3px solid #00ff88;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,245,255,0.15));padding:20px;margin:15px;border-radius:20px;position:relative}
+.mode-badge{position:absolute;top:-10px;right:15px;background:#ffd600;color:#000;padding:5px 15px;border-radius:15px;font-size:11px;font-weight:900;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.mode-title{font-size:20px;font-weight:900;color:#00ff88;margin-bottom:10px}
+.mode-desc{font-size:12px;color:#aaa;line-height:1.6;margin:10px 0}
+.pool-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
+.stat-box{background:rgba(0,0,0,0.5);padding:12px;border-radius:10px;text-align:center}
+.stat-val{font-size:18px;font-weight:900;color:#00ff88}
+.stat-label{font-size:9px;color:#666;margin-top:4px}
+.players-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
+.player-card{background:linear-gradient(135deg,#1a1f3a,#0a0e27);border:2px solid #00f5ff;padding:12px;border-radius:12px;text-align:center;position:relative;transition:all 0.3s}
+.player-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,245,255,0.4)}
+.player-card.dc{border-color:#ff1744}
+.player-card.pbks{border-color:#ffd600}
+.player-card.joker{border-color:#ff00ff;box-shadow:0 0 20px rgba(255,0,255,0.8);animation:jokerGlow 1s infinite}
+.player-card.impact{border-color:#00ff88;box-shadow:0 0 20px rgba(0,255,136,0.8)}
+@keyframes jokerGlow{0%,100%{box-shadow:0 0 20px rgba(255,0,255,0.8)}50%{box-shadow:0 0 40px rgba(255,0,255,1)}}
+.player-avatar{width:60px;height:60px;border-radius:50%;margin:0 auto 8px;border:3px solid #00f5ff;background:#333;display:flex;align-items:center;justify-content:center;font-size:20px;overflow:hidden}
+.player-avatar img{width:100%;height:100%;object-fit:cover}
+.player-name{font-size:11px;font-weight:700;color:#fff;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-score{font-size:18px;font-weight:900;color:#00ff88;text-shadow:0 0 10px rgba(0,255,136,0.5)}
+.joker-badge{position:absolute;top:-8px;left:-8px;background:#ff00ff;color:#fff;padding:3px 8px;border-radius:10px;font-size:9px;font-weight:900}
+.impact-badge{position:absolute;bottom:-8px;right:-8px;background:#00ff88;color:#000;padding:3px 8px;border-radius:10px;font-size:9px;font-weight:900}
+.join-btn{background:linear-gradient(135deg,#00f5ff,#00ff88);color:#000;padding:15px;border-radius:12px;width:100%;font-weight:900;margin-top:10px;font-size:16px}
+.join-btn:disabled{background:#333;color:#666}
+#toast{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#00f5ff,#00ff88);color:#000;padding:15px 30px;border-radius:50px;font-weight:900;transition:all 0.5s;z-index:999;max-width:90%;text-align:center;box-shadow:0 10px 30px rgba(0,245,255,0.5)}
+#toast.show{bottom:30px}
+h3{margin:18px 15px 12px;color:#00f5ff;font-size:18px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:15px 15px}
+.tab{background:rgba(0,245,255,0.08);border:2px solid transparent;color:#fff;padding:12px 5px;border-radius:12px;font-size:11px;font-weight:700;text-align:center;transition:all 0.3s}
+.tab.active{background:linear-gradient(135deg,#00f5ff,#00ff88);color:#000;border:2px solid #00f5ff;transform:scale(1.05)}
+.status-badge{background:#ff9800;color:#000;padding:5px 12px;border-radius:10px;font-size:11px;font-weight:900;text-align:center;margin:10px 0}
+.status-badge.live{background:#ff1744;color:#fff;animation:livePulse 1s infinite}
+.player-count{background:#ff9800;color:#000;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:900;display:inline-block;margin-left:10px}
+.team-badge{display:inline-block;padding:4px 10px;border-radius:10px;font-size:10px;font-weight:900;margin:0 5px}
+.team-dc{background:#ff1744;color:#fff}
+.team-pbks{background:#ffd600;color:#000}
+.commentary{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,rgba(255,0,255,0.95),rgba(0,245,255,0.95));padding:20px 30px;border-radius:20px;border:3px solid #ffd600;z-index:500;text-align:center;font-weight:900;font-size:18px;max-width:90%;box-shadow:0 10px 40px rgba(255,0,255,0.6);animation:commentaryPop 0.5s ease}
+@keyframes commentaryPop{0%{transform:translateX(-50%) scale(0)}100%{transform:translateX(-50%) scale(1)}}
+.commentary.hide{animation:commentaryFade 0.5s forwards}
+@keyframes commentaryFade{to{opacity:0;transform:translateX(-50%) translateY(-20px)}}
+.boundary-effect{position:fixed;inset:0;pointer-events:none;z-index:600}
+.boundary-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:120px;font-weight:900;color:#ffd600;text-shadow:0 0 40px rgba(255,214,0,1);animation:boundaryZoom 1s ease}
+@keyframes boundaryZoom{0%{transform:translate(-50%,-50%) scale(0) rotate(0deg)}50%{transform:translate(-50%,-50%) scale(1.2) rotate(360deg)}100%{transform:translate(-50%,-50%) scale(1) rotate(720deg);opacity:0}}
+.confetti{position:fixed;width:10px;height:10px;background:#ffd600;top:-10px;animation:confettiFall 3s linear;z-index:700}
+@keyframes confettiFall{to{transform:translateY(100vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="reel-intro">
+  <div class="reel-logo">⚡ BEAST</div>
+  <div class="reel-vs">DC 🔥 PBKS</div>
+  <div class="live-badge">🔴 LIVE NOW</div>
+</div>
+<div class="app" id="app"></div>
+<div id="toast"></div>
+<div id="commentaryBox" class="commentary hidden"></div>
+<div id="boundaryEffect" class="boundary-effect"></div>
+<script>
+var user = "";
+var coins = 1000;
+var dcSquad = [
+  {name:'KL Rahul',team:'DC',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319944.png',type:'wk'},
+  {name:'David Miller',team:'DC',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/356800/356891.png',type:'batsman'},
+  {name:'Nitish Rana',team:'DC',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319919.png',type:'allrounder'},
+  {name:'Pathum Nissanka',team:'DC',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/356800/356893.png',type:'batsman'},
+  {name:'Axar Patel',team:'DC',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/309100/309106.png',type:'allrounder'},
+  {name:'Kuldeep Yadav',team:'DC',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/322600/322638.png',type:'bowler'}
+];
+var pbksSquad = [
+  {name:'Shreyas Iyer',team:'PBKS',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319942.png',type:'batsman'},
+  {name:'Marcus Stoinis',team:'PBKS',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319932.png',type:'allrounder'},
+  {name:'Shashank Singh',team:'PBKS',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/356800/356838.png',type:'batsman'},
+  {name:'Marco Jansen',team:'PBKS',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/356800/356892.png',type:'allrounder'},
+  {name:'Xavier Bartlett',team:'PBKS',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/356800/356894.png',type:'bowler'},
+  {name:'Arshdeep Singh',team:'PBKS',runs:0,avatar:'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/319900/319914.png',type:'bowler'}
+];
+var allPlayers = dcSquad.concat(pbksSquad);
+var commentaryLines = {
+  six:["CHAKKA MAAR DIYA! 💥","KYA SHOT HAI! 🔥","GEND BAUNDARY KE BAAR! 🚀","OUT OF THE PARK! ⚡","MAXIMUM! 💣"],
+  four:["CHAUKA! 👏","BEAUTIFUL TIMING! ✨","BOUNDARY! 🏏","CRACKING SHOT! 💫","PIERCES THE GAP! 🎯"],
+  single:["SINGLE LIYA 🏃","ROTATES STRIKE 🔄","QUICK SINGLE! ⚡","EASY RUN 👌"],
+  joker:["JOKER KA KAMAAL! 🎭","2X RUNS! 💥","JOKER ACTIVE! 🔥"],
+  impact:["IMPACT PLAYER AAYA! 🔄","GAME CHANGER! ⚡","MASTERSTROKE! 🎯"]
+};
+var pool = {entry:100,players:[],maxPlayers:6,status:"waiting",batsmen:[],round:0,joker:null,impactUsed:false};
+var activePool = false;
+var currentOver = 0;
+var dcScore = 264;
+var dcOvers = 20;
+function init(){
+  document.getElementById('app').innerHTML = `
+  <div id="login">
+    <div class="login-box">
+      <h1>⚡ DC vs PBKS LIVE</h1>
+      <div class="match-banner">
+        <div class="match-vs">DC 🔥 PBKS</div>
+        <div class="match-info">Arun Jaitley Stadium • 25 April 2026</div>
+        <div class="live-badge">🔴 LIVE</div>
+      </div>
+      <div class="score-box">
+        <div class="score">DC: 264/2</div>
+        <div class="overs">20.0 Overs • RR: 13.2</div>
+        <div style="color:#ffd600;font-size:12px;margin-top:10px">KL Rahul: 152* (67) | Nitish Rana: 91 (44)</div>
+      </div>
+      <button class="btn guest" onclick="guestLogin()">🎮 PLAY AS GUEST</button>
+      <input type="text" id="nameInput" placeholder="अपना नाम">
+      <button class="btn start" onclick="login()">🚀 START GAME</button>
+    </div>
+  <div id="game" class="hidden">
+    <div class="topbar">
+      <div><b id="userName"></b></div>
+      <div class="coins">💰 ₹<span id="coinBal">1000</span></div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('pools',this)">🏆<br>POOLS</button>
+      <button class="tab" onclick="switchTab('live',this)">🔴<br>LIVE</button>
+      <button class="tab" onclick="switchTab('score',this)">📊<br>SCORE</button>
+    </div>
+    <div id="poolsTab">
+      <div class="score-box">
+        <div class="live-badge">🔴 LIVE MATCH</div>
+        <div class="score">DC: 264/2</div>
+        <div class="overs">20.0 Overs | PBKS Bowling Next</div>
+      </div>
+      <div class="pool-mode" onclick="joinPool()">
+        <div class="mode-badge">LIVE</div>
+        <div class="mode-title">🏏 RUN WINNER POOL</div>
+        <div class="mode-desc">6 Players • DC vs PBKS Squad<br>Highest Runs = Winner<br>🎭 Joker: Random 2X Runs<br>🔄 Impact: Change 1 Player</div>
+        <div class="pool-stats">
+          <div class="stat-box"><div class="stat-val">₹100</div><div class="stat-label">Entry</div></div>
+          <div class="stat-box"><div class="stat-val">₹462</div><div class="stat-label">Prize</div></div>
+          <div class="stat-box"><div class="stat-val">LIVE</div><div class="stat-label">Status</div></div>
+        </div>
+        <button class="join-btn" id="poolBtn">JOIN POOL <span class="player-count" id="playerCount">0/6</span></button>
+      </div>
+    </div>
+    <div id="liveTab" class="hidden">
+      <div class="card">
+        <h3 style="text-align:center;color:#00ff88">🔄 IMPACT PLAYER</h3>
+        <p style="text-align:center;font-size:12px;color:#aaa;margin-bottom:15px">PBKS Innings में Use कर सकते हो</p>
+        <button class="join-btn" id="impactBtn" onclick="useImpact()" disabled>IMPACT AVAILABLE IN 2ND INNINGS</button>
+      </div>
+      <div id="liveMatchContainer"></div>
+    </div>
+    <div id="scoreTab" class="hidden">
+      <div class="score-box">
+        <div class="score">DC: 264/2 (20)</div>
+        <div class="overs">KL Rahul: 152* (67) | Nitish Rana: 91 (44)</div>
+      </div>
+      <div class="card">
+        <h3 style="text-align:center;color:#ffd600">🏏 TOP PERFORMERS</h3>
+        <div style="margin:15px 0">
+          <div style="display:flex;justify-content:space-between;margin:10px 0"><span>KL Rahul (DC)</span><span style="color:#00ff88;font-weight:900">152* (67)</span></div>
+          <div style="display:flex;justify-content:space-between;margin:10px 0"><span>Nitish Rana (DC)</span><span style="color:#00ff88;font-weight:900">91 (44)</span></div>
+          <div style="display:flex;justify-content:space-between;margin:10px 0"><span>Xavier Bartlett (PBKS)</span><span style="color:#ff1744;font-weight:900">4-0-69-1</span></div>
+          <div style="display:flex;justify-content:space-between;margin:10px 0"><span>Arshdeep Singh (PBKS)</span><span style="color:#ff1744;font-weight:900">4-0-49-1</span></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  if(user){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("game").classList.remove("hidden");
+    document.getElementById("userName").textContent = user;
+    document.getElementById("coinBal").textContent = coins;
+    simulatePlayers();
+    renderLiveMatch();
+    updateCounts();
+  }
+}
+function guestLogin(){
+  user = "Player_" + Math.floor(1000 + Math.random() * 9000);
+  coins = 1000;
+  showToast("Login Success +₹1000");
+  init();
+}
+function login(){
+  var name = document.getElementById("nameInput").value.trim();
+  if(name.length < 2) return showToast("कम से कम 2 अक्षर");
+  user = name;
+  showToast("Welcome " + name);
+  init();
+}
+function switchTab(tab,el){
+  document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});
+  el.classList.add("active");
+  document.getElementById("poolsTab").classList.add("hidden");
+  document.getElementById("liveTab").classList.add("hidden");
+  document.getElementById("scoreTab").classList.add("hidden");
+  document.getElementById(tab+"Tab").classList.remove("hidden");
+}
+function showToast(msg){
+  var t=document.getElementById("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  setTimeout(function(){t.classList.remove("show")},3000);
+}
+function showCommentary(text){
+  var box=document.getElementById("commentaryBox");
+  box.textContent=text;
+  box.classList.remove("hidden");
+  setTimeout(function(){box.classList.add("hide");setTimeout(function(){box.classList.add("hidden");box.classList.remove("hide")},500)},2000);
+}
+function showBoundary(type){
+  var effect=document.getElementById("boundaryEffect");
+  effect.innerHTML='<div class="boundary-text">'+type+'</div>';
+  setTimeout(function(){effect.innerHTML=''},1000);
+}
+function createConfetti(){
+  for(var i=0;i<50;i++){
+    var c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"%";
+    c.style.background=["#ffd600","#ff1744","#00f5ff","#00ff88"][Math.floor(Math.random()*4)];
+    c.style.animationDelay=Math.random()*0.5+"s";
+    document.body.appendChild(c);
+    setTimeout(function(el){return function(){el.remove()}}(c),3000);
+  }
+}
+function simulatePlayers(){
+  if(pool.players.length<6 && Math.random()>0.5){
+    var names=["Rohit","Virat","Dhoni","Hardik","Bumrah","KL"];
+    var n=names[Math.floor(Math.random()*names.length)]+"_"+Math.floor(Math.random()*999);
+    if(pool.players.indexOf(n)===-1) pool.players.push(n);
+  }
+  updateCounts();
+  setTimeout(simulatePlayers,3000);
+}
+function updateCounts(){
+  document.getElementById("playerCount").textContent=pool.players.length+"/6";
+}
+function joinPool(){
+  if(!user) return showToast("Pehle login karo!");
+  if(pool.players.indexOf(user)!==-1) return showToast("Already joined!");
+  if(coins<pool.entry) return showToast("Coins kam hain!");
+  if(pool.players.length>=pool.maxPlayers) return showToast("Pool full!");
+  coins-=pool.entry;
+  pool.players.push(user);
+  document.getElementById("coinBal").textContent=coins;
+  updateCounts();
+  showToast("Joined LIVE Pool!");
+  createConfetti();
+  if(pool.players.length===6 && pool.status==="waiting"){
+    pool.status="live";
+    startLiveMatch();
+  }
+}
+function startLiveMatch(){
+  activePool=true;
+  var availablePlayers=allPlayers.slice();
+  pool.batsmen=[];
+  for(var i=0;i<6;i++){
+    var idx=Math.floor(Math.random()*availablePlayers.length);
+    var player=JSON.parse(JSON.stringify(availablePlayers.splice(idx,1)[0]));
+    player.isMe=i===0;
+    player.name=i===0?user:player.name;
+    player.isJoker=false;
+    player.isImpact=false;
+    pool.batsmen.push(player);
+  }
+  pool.joker=pool.batsmen[Math.floor(Math.random()*6)];
+  pool.joker.isJoker=true;
+  showCommentary("🎭 "+pool.joker.name+" IS JOKER! 2X RUNS");
+  currentOver=0;
+  renderLiveMatch();
+  playOver();
+}
+function playOver(){
+  if(currentOver>=5 || pool.status!=="live") return;
+  currentOver++;
+  pool.batsmen.forEach(function(b){
+    var runs=[0,1,2,3,4,6][Math.floor(Math.random()*6)];
+    if(b.isJoker && runs>0) runs*=2;
+    b.runs+=runs;
+    if(runs===6) showBoundary("6");
+    else if(runs===4) showBoundary("4");
+    if(runs>0){
+      var lines=commentaryLines[runs===6?"six":runs===4?"four":"single"];
+      showCommentary(lines[Math.floor(Math.random()*lines.length)]);
+    }
+  });
+  renderLiveMatch();
+  if(currentOver<5) setTimeout(function(){playOver()},4000);
+  else setTimeout(function(){declareWinner()},2000);
+}
+function renderLiveMatch(){
+  if(!activePool) return;
+  var html='<div class="status-badge live">🔴 LIVE - PBKS BATTING</div>';
+  html+='<div class="players-grid">';
+  pool.batsmen.forEach(function(b){
+    var cls='player-card';
+    if(b.isMe) cls+=' me';
+    if(b.isJoker) cls+=' joker';
+    if(b.isImpact) cls+=' impact';
+    if(b.team==='DC') cls+=' dc';
+    else cls+=' pbks';
+    html+='<div class="'+cls+'">';
+    if(b.isJoker) html+='<div class="joker-badge">🎭 JOKER</div>';
+    if(b.isImpact) html+='<div class="impact-badge">🔄 IMPACT</div>';
+    html+='<div class="player-avatar"><img src="'+b.avatar+'" onerror="this.style.display=\'none\'"></div>';
+    html+='<div class="player-name">'+b.name+'</div>';
+    html+='<div class="player-score">'+b.runs+'</div>';
+    html+='<div class="team-badge team-'+b.team.toLowerCase()+'">'+b.team+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  document.getElementById("liveMatchContainer").innerHTML=html;
+}
+function useImpact(){
+  if(pool.impactUsed) return showToast("Impact already used!");
+  var bench=allPlayers.filter(function(pl){return!pool.batsmen.find(function(b){return b.name===pl.name})});
+  var outIdx=Math.floor(Math.random()*pool.batsmen.length);
+  var inIdx=Math.floor(Math.random()*bench.length);
+  var newPlayer=JSON.parse(JSON.stringify(bench[inIdx]));
+  newPlayer.isImpact=true;
+  newPlayer.runs=0;
+  pool.batsmen[outIdx]=newPlayer;
+  pool.impactUsed=true;
+  showCommentary("🔄 IMPACT: "+newPlayer.name+" AAYA!");
+  createConfetti();
+  renderLiveMatch();
+  document.getElementById("impactBtn").disabled=true;
+  document.getElementById("impactBtn").textContent="IMPACT USED";
+}
+function declareWinner(){
+  pool.status="finished";
+  var winner=pool.batsmen.reduce(function(a,b){return a.runs>b.runs?a:b});
+  var isWinner=winner.isMe;
+  if(isWinner){
+    coins+=pool.entry*6*0.77;
+    showToast("🏆 YOU WON ₹"+Math.floor(pool.entry*6*0.77)+"!");
+    createConfetti();
+  }else{
+    showToast("Winner: "+winner.name+" ("+winner.runs+" runs)");
+  }
+  document.getElementById("coinBal").textContent=coins;
+}
+setTimeout(init,2500);
+</script>
+</body>
+</html>
